@@ -27,17 +27,14 @@ public class LionTest {
     Feline feline;
     @Test
     public void testGetFoodReturnList() throws Exception {
-        // Настраиваем подставной объект Feline
+
         when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба")); // Здесь вызываем eatMeat()
 
-        // Создаем объект Lion с подставным Feline
         Lion lion = new Lion(feline, "Самец");
 
-        // Проверяем результат
         List<String> foods = lion.getFood();
         assertEquals(List.of("Животные", "Птицы", "Рыба"), foods);
 
-        // Проверяем, что метод eatMeat() был вызван
         verify(feline).eatMeat();
     }
 }
