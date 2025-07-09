@@ -5,22 +5,32 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.asm.util.CheckClassAdapter.verify;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class CatTest {
 
     @Test
-    public void testGetSoundReturnValueForCat(){
-        Cat cat = new Cat(new Feline());
-        String actual = cat.getSound();
-        String expected = "Мяу";
-        assertEquals("Метод getSound() должен вернуть 'Мяу'", expected, actual);
+    public void testGetSoundReturnsMeow() {
+        Feline felineMock = mock(Feline.class);
+        Cat cat = new Cat(felineMock);
+
+        String sound = cat.getSound();
+
+        assertEquals("Мяу", sound);
     }
 
+
     @Test
-    public void testGetFoodReturnList() throws Exception {
-        Cat cat = new Cat(new Feline());
-        String actual = cat.getFood().toString();
-        String expected = List.of("Животные", "Птицы", "Рыба").toString();
-        assertEquals("Список неверный", expected, actual);
+    public void testGetFood_CallsEatMeatOnPredator() throws Exception {
+        Feline felineMock = mock(Feline.class);
+        List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
+        when(felineMock.eatMeat()).thenReturn(expectedFood);
+
+        Cat cat = new Cat(felineMock);
+        List<String> actualFood = cat.getFood();
+        assertEquals(expectedFood, actualFood);
     }
 }

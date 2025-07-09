@@ -17,25 +17,24 @@ public class LionTest {
     public void testGetKittensReturnKittensCount() throws Exception {
 
         Feline mockFeline = mock(Feline.class);
-        when(mockFeline.getKittens()).thenReturn(3); // Мокаем количество детенышей
+        when(mockFeline.getKittens()).thenReturn(3);
         Lion lion = new Lion(mockFeline, "Самка");
 
         assertEquals(3, lion.getKittens());
     }
 
-    @Mock
-    Feline feline;
     @Test
-    public void testGetFoodReturnList() throws Exception {
+    public void testGetFood_ReturnsCorrectFoodList() throws Exception {
 
-        when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба")); // Здесь вызываем eatMeat()
+        Feline felineMock = mock(Feline.class);
+        when(felineMock.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
 
-        Lion lion = new Lion(feline, "Самец");
+        Lion lion = new Lion(felineMock, "Самец");
 
-        List<String> foods = lion.getFood();
-        assertEquals(List.of("Животные", "Птицы", "Рыба"), foods);
+        List<String> actualFood = lion.getFood();
 
-        verify(feline).eatMeat();
+        assertEquals(List.of("Животные", "Птицы", "Рыба"), actualFood);
+        verify(felineMock, times(1)).getFood("Хищник");
     }
 }
 
